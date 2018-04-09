@@ -107,13 +107,13 @@
 <meta property="og:site_name" content="邦布的后花园">
 <meta property="og:description" content="问题出现在进行我的一个项目后台开发的时候需要上传文件，但是有的时候需要限制某一系列文件类型，以防止用户上传不期望的文件，一开始是使用js进行判断，后面发现只需要使用html中的accept就可以稍微给用户进行一些限制，下面介绍如何限制用户文件上传。 html第一次判断主要方法：使用input标签的accept属性。 限制图片类型文件1&amp;lt;input type=&quot;file&quot; accept=&quot;im">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://jetbamboo.github.io/2018/04/10/images/4/选择视频类型.png">
-<meta property="og:image" content="http://jetbamboo.github.io/2018/04/10/images/4/选择自定义类型.png">
-<meta property="og:updated_time" content="2018-04-09T11:54:43.542Z">
+<meta property="og:image" content="http://jetbamboo.github.io/2018/04/10/4.使用html和js对用户上传的文件类型进行判断/4/选择视频类型.png">
+<meta property="og:image" content="http://jetbamboo.github.io/2018/04/10/4.使用html和js对用户上传的文件类型进行判断/4/选择自定义类型.png">
+<meta property="og:updated_time" content="2018-04-09T12:07:30.496Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用html和js对用户上传的文件类型进行判断">
 <meta name="twitter:description" content="问题出现在进行我的一个项目后台开发的时候需要上传文件，但是有的时候需要限制某一系列文件类型，以防止用户上传不期望的文件，一开始是使用js进行判断，后面发现只需要使用html中的accept就可以稍微给用户进行一些限制，下面介绍如何限制用户文件上传。 html第一次判断主要方法：使用input标签的accept属性。 限制图片类型文件1&amp;lt;input type=&quot;file&quot; accept=&quot;im">
-<meta name="twitter:image" content="http://jetbamboo.github.io/2018/04/10/images/4/选择视频类型.png">
+<meta name="twitter:image" content="http://jetbamboo.github.io/2018/04/10/4.使用html和js对用户上传的文件类型进行判断/4/选择视频类型.png">
 
 
 
@@ -422,14 +422,15 @@
 <h3 id="限制图片类型文件"><a href="#限制图片类型文件" class="headerlink" title="限制图片类型文件"></a>限制图片类型文件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"image/*"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>但是对于谷歌浏览器来说这样的类型会导致某些计算机打开文件选择框的速度变慢，所以建议用下面的代码。</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">".jpg,.jpeg,.png,.gif"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>主要区别：  </p>
-<p>使用<code>image/*</code>时，会在右下角提示为<code>图片文件</code></p>
-<p><img src="../images/4/选择视频类型.png" alt="类别类型" title="选择视频类型"></p>
-<p>使用自定义类型的时候会显示<code>自定义类型</code>，对于用户来说不够直观(去他妹的挑刺用户)</p>
-<p><img src="../images/4/选择自定义类型.png" alt="自定类型" title="选择自定义类型"></p>
 <h3 id="限制视频类型文件"><a href="#限制视频类型文件" class="headerlink" title="限制视频类型文件"></a>限制视频类型文件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"video/*"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>同样，因为加载速度的问题，使用下面的简化代码</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">".mp4,.flv,.avi,.rmvb"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这两种方式主要区别除了加载速度会快上那么一丢丢外，还有显示区别。如下：  </p>
+<p>使用<code>image/*</code>时，会在右下角提示为<code>图片文件</code></p>
+<p><img src="4/选择视频类型.png" alt="类别类型" title="选择视频类型"></p>
+<p>使用自定义类型的时候会显示<code>自定义类型</code>，对于用户来说不够直观(去他妹的挑刺用户)</p>
+<p><img src="4/选择自定义类型.png" alt="自定类型" title="选择自定义类型"></p>
+
       
     </div>
 
