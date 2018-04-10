@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="事情起因最近在上Linux的课，要做实验报告了，需要用Ubuntu，为了使我的实验报告好看点，我想给我的Ubuntu16装个好看点的皮肤，但是无料坑太多，这里写出来给大家提供参考… 皮肤管理工具的安装在百度里面找到了这篇文章  安装完 Ubuntu 16.10 后必做的 16 件事:https://www.coyee.com/article/11309-16-things-to-do-after-">
+<meta name="keywords" content="ubuntu,linux,踩坑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu16安装皮肤踩坑记">
+<meta property="og:url" content="http://jetbamboo.github.io/2018/04/10/5-Ubuntu16安装皮肤踩坑记/index.html">
+<meta property="og:site_name" content="邦布的后花园">
+<meta property="og:description" content="事情起因最近在上Linux的课，要做实验报告了，需要用Ubuntu，为了使我的实验报告好看点，我想给我的Ubuntu16装个好看点的皮肤，但是无料坑太多，这里写出来给大家提供参考… 皮肤管理工具的安装在百度里面找到了这篇文章  安装完 Ubuntu 16.10 后必做的 16 件事:https://www.coyee.com/article/11309-16-things-to-do-after-">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://jetbamboo.github.io/images/5/install_unity-tweak-tool.png">
+<meta property="og:image" content="http://jetbamboo.github.io/images/5/unity-tweak-tool.png">
+<meta property="og:image" content="http://i.imgur.com/tv3II6s.png">
+<meta property="og:image" content="http://jetbamboo.github.io/images/5/unzip.png">
+<meta property="og:image" content="http://jetbamboo.github.io/images/5/cp.png">
+<meta property="og:image" content="http://jetbamboo.github.io/images/5/theme.png">
+<meta property="og:image" content="http://jetbamboo.github.io/images/5/finish.png">
+<meta property="og:updated_time" content="2018-04-10T08:15:16.346Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu16安装皮肤踩坑记">
+<meta name="twitter:description" content="事情起因最近在上Linux的课，要做实验报告了，需要用Ubuntu，为了使我的实验报告好看点，我想给我的Ubuntu16装个好看点的皮肤，但是无料坑太多，这里写出来给大家提供参考… 皮肤管理工具的安装在百度里面找到了这篇文章  安装完 Ubuntu 16.10 后必做的 16 件事:https://www.coyee.com/article/11309-16-things-to-do-after-">
+<meta name="twitter:image" content="http://jetbamboo.github.io/images/5/install_unity-tweak-tool.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://jetbamboo.github.io/2018/04/10/5-Ubuntu16安装皮肤踩坑记/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Ubuntu16安装皮肤踩坑记 | 邦布的后花园</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">邦布的后花园</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Bamboo's haven</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about menu-item-active">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-schedule">
+    <a href="/schedule/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />日程表</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />站点地图</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />公益 404</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-something">
+    <a href="/something" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />有料</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jetbamboo.github.io/2018/04/10/5-Ubuntu16安装皮肤踩坑记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="邦布">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邦布的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ubuntu16安装皮肤踩坑记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-09T22:17:59Z">2018-04-09</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>最近在上Linux的课，要做实验报告了，需要用Ubuntu，为了使我的实验报告好看点，我想给我的Ubuntu16装个好看点的皮肤，但是无料坑太多，这里写出来给大家提供参考…</p>
+<h2 id="皮肤管理工具的安装"><a href="#皮肤管理工具的安装" class="headerlink" title="皮肤管理工具的安装"></a>皮肤管理工具的安装</h2><p>在百度里面找到了这篇文章</p>
+<blockquote>
+<p>安装完 Ubuntu 16.10 后必做的 16 件事:<br><a href="https://www.coyee.com/article/11309-16-things-to-do-after-installing-ubuntu-16-10" target="_blank" rel="noopener">https://www.coyee.com/article/11309-16-things-to-do-after-installing-ubuntu-16-10</a></p>
+</blockquote>
+<p>里面提示到如果要安装主题，那么需要我下载一款叫<code>Unity Tweak Tool</code>的工具，这个工具是必不可少的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install unity-tweak-tool</span><br></pre></td></tr></table></figure>
+<p>安装时会这样显示（妈蛋本来想还原的结果更新了系统竟然安装成功了？！）</p>
+<p><img src="/images/5/install_unity-tweak-tool.png" alt="图示" title="安装截图"></p>
+<p>有可能会出现下面这个问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">E: Unable to locate package unity-tweak-tool</span><br></pre></td></tr></table></figure>
+<p>看样子是系统没更新的问题…更新下系统就行了，软件是长这个样子的</p>
+<p><img src="/images/5/unity-tweak-tool.png" alt="图示" title="Unity Tweak Tool"></p>
+<h2 id="皮肤下载"><a href="#皮肤下载" class="headerlink" title="皮肤下载"></a>皮肤下载</h2><p>百度上找到了一个专门给ubuntu下载皮肤的网址（不用翻墙就能进）</p>
+<blockquote>
+<p>Ubuntu Themes: <a href="http://www.ubuntuthemes.org/" target="_blank" rel="noopener">http://www.ubuntuthemes.org/</a> （皮肤少，有的需要付钱）</p>
+</blockquote>
+<p>最终在这个网址里面找到了一个比较好看的扁平化主题皮肤<code>Flatabulous</code></p>
+<blockquote>
+<p>Ubuntu下一款极好的扁平化主题: <a href="https://www.jianshu.com/p/5b80711f304f" target="_blank" rel="noopener">https://www.jianshu.com/p/5b80711f304f</a></p>
+</blockquote>
+<p><img src="http://i.imgur.com/tv3II6s.png" alt="图示" title="Flatabulous"></p>
+<p>看起来是真的漂亮！我找到了个<a href="https://link.jianshu.com/?t=https://github.com/anmoljagetia/Flatabulous/archive/master.zip" target="_blank" rel="noopener">链接</a>可以直接下载这个主题，当然我还是希望你们去官网下载，资次下原作者，这里只是方便我们进行操作，如果有需要用命令行下载的我之后可能会考虑更新下Blog</p>
+<blockquote>
+<p>Flatabulous <a href="http://blog.anmoljagetia.me/flatabulous-ubuntu-theme/" target="_blank" rel="noopener">http://blog.anmoljagetia.me/flatabulous-ubuntu-theme/</a></p>
+</blockquote>
+<h2 id="皮肤安装"><a href="#皮肤安装" class="headerlink" title="皮肤安装"></a>皮肤安装</h2><p>下载完成后可以得到一个<code>Flatabulous-master.zip</code>的压缩包，使用命令解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unzip Flatabulous-master.zip</span><br></pre></td></tr></table></figure>
+<p>解压后如下：</p>
+<p><img src="/images/5/unzip.png" alt="图示" title="解压Flatabulous-master.zip"></p>
+<p>解压后可以看到里面有<code>gtk-2.0</code>，<code>gtk-3.0</code>，<code>unity</code>等文件夹，what，ubuntu系统桌面还分这么多种类的么，不管那么多了，按照之前网站的提示将整个文件夹移动到<code>/usr/share/themes</code>下</p>
+<p>移动命令，保险起见用cp，失败了不至于失去文件，另外需要加上sudo，要不然会提示<code>Permission denied</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp Flatabulous-master /usr/share/themes</span><br></pre></td></tr></table></figure>
+<p>移动后会在<code>/usr/share/themes</code>下出现<code>Flatabulous-master</code>文件夹</p>
+<p><img src="/images/5/cp.png" alt="图示" title="移动文件夹"></p>
+<p>然后我们打开我们之前安装的<code>Unity Tweak Tool</code>，选择<code>主题</code>，然后选择<code>Theme</code>选项卡下的<code>Flatabulous-master</code>，wala！界面焕然一新！</p>
+<p><img src="/images/5/theme.png" alt="图示" title="设定Theme"></p>
+<p>别着急，还剩下最后一点就解决了，接下来我们去下载图标主题。</p>
+<h2 id="图标主题下载"><a href="#图标主题下载" class="headerlink" title="图标主题下载"></a>图标主题下载</h2><p>根据<code>Ubuntu下一款极好的扁平化主题</code>所示的方法分别敲入下面三条命令来获得<code>Ultra Flat</code>图标主题<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo add-apt-repository ppa:noobslab/icons</span><br><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install ultra-flat-icons</span><br></pre></td></tr></table></figure></p>
+<p>等待一段时间后（大概8分钟），然后用同样的方法，在<code>Unity Tweak Tool</code>选择<code>主题</code>，选择<code>icons</code>选项卡，选择<code>Ultra Flat</code>，最后<a href="https://dribbble.com/shots/1355879-Meteor-Wallpaper" target="_blank" rel="noopener">在这里</a>下载壁纸，装上，大功告成！</p>
+<p><img src="/images/5/finish.png" alt="图示" title="大功告成！"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/踩坑/" rel="tag"># 踩坑</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/10/4-使用html和js对用户上传的文件类型进行判断/" rel="next" title="使用html和js对用户上传的文件类型进行判断">
+                <i class="fa fa-chevron-left"></i> 使用html和js对用户上传的文件类型进行判断
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/11/6-使用七牛云踩坑记/" rel="prev" title="6.使用七牛云踩坑记">
+                6.使用七牛云踩坑记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="邦布" />
+            
+              <p class="site-author-name" itemprop="name">邦布</p>
+              <p class="site-description motion-element" itemprop="description">邦布的后花园</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事情起因"><span class="nav-number">1.</span> <span class="nav-text">事情起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#皮肤管理工具的安装"><span class="nav-number">2.</span> <span class="nav-text">皮肤管理工具的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#皮肤下载"><span class="nav-number">3.</span> <span class="nav-text">皮肤下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#皮肤安装"><span class="nav-number">4.</span> <span class="nav-text">皮肤安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图标主题下载"><span class="nav-number">5.</span> <span class="nav-text">图标主题下载</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">邦布</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="## 注意：该文章是基于七牛云JSSDK2.3版本所书写的，请使用1.x版本的或更高版本的用户查看其他文章，否则可能会踩坑 事情起因公司项目要弄上传图片视频等功能，但是后端竟然不提供储存空间…好吧，那我只能储存到第三方的服务器了，之前有同事弄过七牛云储存，斟酌了下还是使用七牛云，毕竟可以和同事交流下人生与…啊不，交流下实现过程。 但是不得不说这七牛云真的全部是坑，连他自己的Demo也全部是坑，百度">
+<meta name="keywords" content="js,七牛云,储存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.使用七牛云踩坑记">
+<meta property="og:url" content="http://jetbamboo.github.io/2018/04/11/6-使用七牛云踩坑记/index.html">
+<meta property="og:site_name" content="邦布的后花园">
+<meta property="og:description" content="## 注意：该文章是基于七牛云JSSDK2.3版本所书写的，请使用1.x版本的或更高版本的用户查看其他文章，否则可能会踩坑 事情起因公司项目要弄上传图片视频等功能，但是后端竟然不提供储存空间…好吧，那我只能储存到第三方的服务器了，之前有同事弄过七牛云储存，斟酌了下还是使用七牛云，毕竟可以和同事交流下人生与…啊不，交流下实现过程。 但是不得不说这七牛云真的全部是坑，连他自己的Demo也全部是坑，百度">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-10T09:14:14.586Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.使用七牛云踩坑记">
+<meta name="twitter:description" content="## 注意：该文章是基于七牛云JSSDK2.3版本所书写的，请使用1.x版本的或更高版本的用户查看其他文章，否则可能会踩坑 事情起因公司项目要弄上传图片视频等功能，但是后端竟然不提供储存空间…好吧，那我只能储存到第三方的服务器了，之前有同事弄过七牛云储存，斟酌了下还是使用七牛云，毕竟可以和同事交流下人生与…啊不，交流下实现过程。 但是不得不说这七牛云真的全部是坑，连他自己的Demo也全部是坑，百度">
+
+
+
+
+
+
+  <link rel="canonical" href="http://jetbamboo.github.io/2018/04/11/6-使用七牛云踩坑记/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>6.使用七牛云踩坑记 | 邦布的后花园</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">邦布的后花园</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Bamboo's haven</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about menu-item-active">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-schedule">
+    <a href="/schedule/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />日程表</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-sitemap">
+    <a href="/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />站点地图</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />公益 404</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-something">
+    <a href="/something" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />有料</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jetbamboo.github.io/2018/04/11/6-使用七牛云踩坑记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="邦布">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="邦布的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">6.使用七牛云踩坑记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T16:14:47Z">2018-04-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##</p>
+<p><strong>注意：该文章是基于七牛云JSSDK2.3版本所书写的，请使用1.x版本的或更高版本的用户查看其他文章，否则可能会踩坑</strong></p>
+<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>公司项目要弄上传图片视频等功能，但是后端竟然不提供储存空间…好吧，那我只能储存到第三方的服务器了，之前有同事弄过七牛云储存，斟酌了下还是使用七牛云，毕竟可以和同事交流下人生与…啊不，交流下实现过程。</p>
+<p>但是不得不说这七牛云真的全部是坑，连他自己的Demo也全部是坑，百度也特么全部是坑，搞了一个星期终于弄了个<a href="https://gitlab.com/JetBamboo/qiniu2.x-demo" target="_blank" rel="noopener">Demo</a>出来…，感兴趣的可以clone玩玩，目前只资次测试上传能否成功（记得按F12），后面我可能会加点功能…</p>
+<blockquote>
+<p>七牛云JSSDK <a href="https://developer.qiniu.com/kodo/sdk/1283/javascript" target="_blank" rel="noopener">https://developer.qiniu.com/kodo/sdk/1283/javascript</a><br>我的Demo <a href="https://gitlab.com/JetBamboo/qiniu2.x-demo" target="_blank" rel="noopener">https://gitlab.com/JetBamboo/qiniu2.x-demo</a>  </p>
+</blockquote>
+<h2 id="版本之坑"><a href="#版本之坑" class="headerlink" title="版本之坑"></a>版本之坑</h2><p>首先先来看它文档里面有什么坑，首先！他完全没有提这个文档的版本，这是2.x版本的文档，和1.x版本的API完全不同！第一次使用的时候我竟然傻傻去百度然后踩入他们的坑里面不能自拔，百度上得到的回答大多数都是1.x版本的，那套API早就和现在不一样了。当然我在文档最后找到了1.x版本API入口，但是他们把这个东西放到前面不好么…</p>
+<h2 id="示例之坑"><a href="#示例之坑" class="headerlink" title="示例之坑"></a>示例之坑</h2><p>阅读完前面的API，总想搞个Demo玩玩，怎么弄呢？官方下面竟然给了如何使用Demo，太赞！但是怎么只有短短的几行啊…</p>
+<p>首先，他给的<code>config.json.example</code>根本就不是他贴出来那样…而且他贴出来那个怎么看都是js啊…好吧，我先照着example写一个，写好后<code>npm install</code>，<code>npm run server</code>，嗯？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm ERR! missing script: server</span><br></pre></td></tr></table></figure>
+<p>好吧，原来是<code>npm run serve</code>不是<code>npm run server</code>（干得好，七牛云）</p>
+<p>然后<code>npm run dev</code>来跑Demo，当当，你的Chrome弹了两个网页出来，但是两个都没有内容，为什么，因为地址栏写的是<code>0.0.0.0:8080</code>，好吧，我配置的时候不是这样的啊，跑到根目录改<code>webpack.dev.js</code>，把地址都改成<code>127.0.0.1</code>，端口都改成example的<code>9000</code>，再重新run发现页面出来了，嗯？怎么按钮点不动？</p>
+<p><em>这里应该是一张图</em></p>
+<p>可以你厉害，又是地址问题，我不管了，去**的把。</p>
+<h2 id="Bucket之坑"><a href="#Bucket之坑" class="headerlink" title="Bucket之坑"></a>Bucket之坑</h2><p>算了，还是自己写Demo算了，官方那个我实在不会用，根据他的API写了一堆代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"zh-CN"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>测试官方的API<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"style.css"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">label</span>&gt;</span>AK<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"ak"</span> <span class="attr">value</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">label</span>&gt;</span>SK<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"sk"</span> <span class="attr">value</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">label</span>&gt;</span>Bucket<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"bucket"</span> <span class="attr">value</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span>&gt;</span>上传<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">class</span>=<span class="string">"uploader"</span> <span class="attr">id</span>=<span class="string">"upload"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://qtestbucket.qiniudn.com/demo/CryptoJS.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> <span class="comment">&lt;!-- 七牛云上的加密算法 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"qiniu.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> <span class="comment">&lt;!-- 七牛云的SDK --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"upcode.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> <span class="comment">&lt;!-- 我自己的加密算法 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"demo.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> <span class="comment">&lt;!-- JS后面会给 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">  'use strict'</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> file = &#123;&#125;;          <span class="comment">// 文件Blob对象</span></span><br><span class="line">  <span class="keyword">let</span> key = <span class="string">''</span>;           <span class="comment">// 文件名</span></span><br><span class="line">  <span class="keyword">let</span> ak = <span class="string">''</span>;            <span class="comment">// 七牛云账号里的AccessKey</span></span><br><span class="line">  <span class="keyword">let</span> sk = <span class="string">''</span>;            <span class="comment">// 七牛云账号里的SecretKey</span></span><br><span class="line">  <span class="keyword">let</span> bucket = <span class="string">''</span>;        <span class="comment">// 储存空间的名字【这是个坑】</span></span><br><span class="line">  <span class="keyword">let</span> token = <span class="string">''</span>;         <span class="comment">// 后端给的token，这里我自己生成</span></span><br><span class="line">  <span class="keyword">let</span> putExtra = &#123;</span><br><span class="line">    fname: <span class="string">''</span>,            <span class="comment">// 文件原文件名</span></span><br><span class="line">    params: &#123;&#125;,           <span class="comment">// 用来放置自定义变量</span></span><br><span class="line">    mimeType: [] || <span class="literal">null</span>, <span class="comment">// 用来限制上传文件类型</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> config = &#123;</span><br><span class="line">    useCdnDomain: <span class="literal">false</span>,            <span class="comment">// 使用CDN加速</span></span><br><span class="line">    disableStatisticsReport: <span class="literal">false</span>, <span class="comment">// 是否禁用日志</span></span><br><span class="line">    region: qiniu.region.z0,        <span class="comment">// 上传域名区域（这里是华东）</span></span><br><span class="line">    retryCount: <span class="number">3</span>,                  <span class="comment">// 上传自动重试次数</span></span><br><span class="line">    concurrentRequestLimit: <span class="number">3</span>,      <span class="comment">// 分片上传的并发请求量</span></span><br><span class="line">    checkByMD5: <span class="literal">false</span>,              <span class="comment">// 是否开启 MD5 校验</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 观察者，观察上传进度（边缘OB）</span></span><br><span class="line">  <span class="keyword">let</span> ob = &#123;</span><br><span class="line">    <span class="comment">// 接收上传进度信息</span></span><br><span class="line">    next: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'next'</span>, res);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 上传错误后触发</span></span><br><span class="line">    error: <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'error'</span>, err);</span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="comment">// 接收上传完成后的后端返回信息</span></span><br><span class="line">    complete: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'complete'</span>, res);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'#upload'</span>).addEventListener(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    ak = <span class="built_in">document</span>.querySelector(<span class="string">'#ak'</span>).value;</span><br><span class="line">    sk = <span class="built_in">document</span>.querySelector(<span class="string">'#sk'</span>).value;</span><br><span class="line">    bucket = <span class="built_in">document</span>.querySelector(<span class="string">'#bucket'</span>).value;</span><br><span class="line">    token = getToken(ak, sk, &#123;</span><br><span class="line">      scope: bucket, </span><br><span class="line">      deadline: <span class="number">3153600000</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span>(e.target.files.length &lt;= <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    file = e.target.files[<span class="number">0</span>];</span><br><span class="line">    key = e.target.files[<span class="number">0</span>].name;</span><br><span class="line"></span><br><span class="line">    qiniu.upload(file, key, token, putExtra, config).subscribe(ob); <span class="comment">// 上传开始</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>这里有个地方，关于获得<code>qiniu.min.js</code>的方法，你下载他的源码里面是不会有的，毕竟是源码，你得编译以后才能获得：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm run build</span><br></pre></td></tr></table></figure>
+<p>css就不用看了…这里不是重点，重点是那个bucket，官方给的说法是</p>
+<p><code>Bucket 的外链默认域名，在 Bucket 的内容管理里查看，如：&#39;http://xxx.bkt.clouddn.com/&#39;</code></p>
+<p>这句话就是个坑啊！！我被他坑了一个星期的时间，如果你按照他的那个格式来，比如<code>http://mybucket.clouddn.com</code>那么你100%会遇到</p>
+<pre><code>{code: 631, message: &quot;xhr request failed, code: 631; response: {&quot;error&quot;:&quot;no such bucket&quot;}&quot;, reqId: &quot;XXXXXXXXXXXXXX&quot;, isRequestError: true}
+</code></pre><p>这个错误很明显，找不到相应的bucket，然后你会去核对好几遍名字到底对不对，我发誓，你绝对写对了，错是因为本来就不是域名！他要填的是你Bucket的名字而不是域名！</p>
+<p>比如：我的一个仓库名字是<code>test</code>， 他的外链域名是<code>http://c9qfx1v.clouddn.com</code>，你要填的是<code>test</code>，而不是后面那一大坨！</p>
+<p>更改之后就能用了…</p>
+<p>我觉得还会有更多的坑…以后慢慢补上吧…</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/七牛云/" rel="tag"># 七牛云</a>
+          
+            <a href="/tags/储存/" rel="tag"># 储存</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/10/5-Ubuntu16安装皮肤踩坑记/" rel="next" title="Ubuntu16安装皮肤踩坑记">
+                <i class="fa fa-chevron-left"></i> Ubuntu16安装皮肤踩坑记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="邦布" />
+            
+              <p class="site-author-name" itemprop="name">邦布</p>
+              <p class="site-description motion-element" itemprop="description">邦布的后花园</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事情起因"><span class="nav-number">1.</span> <span class="nav-text">事情起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本之坑"><span class="nav-number">2.</span> <span class="nav-text">版本之坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例之坑"><span class="nav-number">3.</span> <span class="nav-text">示例之坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bucket之坑"><span class="nav-number">4.</span> <span class="nav-text">Bucket之坑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">邦布</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
